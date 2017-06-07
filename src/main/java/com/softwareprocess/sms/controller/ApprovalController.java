@@ -122,7 +122,7 @@ public class ApprovalController {
 		String resultCode = "error";
 		Map<String, Object> param = new HashMap<>();
 		param.put("remark", remark);
-		param.put("status", status);
+		param.put("bstatus", status);
 		int udt = commonDatabaseService.updateStringData("bill", "bid", bid, param);
 		if (udt > 0) {
 			resultCode = "success";
@@ -167,10 +167,11 @@ public class ApprovalController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "approvalRestock", produces = "application/json; charset=utf-8")
-	public String approvalRestock(HttpServletRequest request, @RequestParam(value = "rid", required = false) String rid,
+	public String approvalRestock(HttpServletRequest request, @RequestParam(value = "rid") String rid,
 			@RequestParam(value = "remark", required = false) String remark,
 			@RequestParam(value = "status", required = false) String status) {
 		String resultCode = "error";
+		System.out.println("jinrukongzhiqi");
 		Map<String, Object> param = new HashMap<>();
 		param.put("remark", remark);
 		param.put("rstatus", status);
@@ -227,6 +228,9 @@ public class ApprovalController {
 						Map<String, Object> udtparam = new HashMap<>();
 						udtparam.put("gstock", nstock);
 						udtparam.put("gprice", nprice);
+						udtparam.put("pddate", pddate);
+						udtparam.put("keepdate", epdateString);
+						udtparam.put("ginprice", price);
 						commonDatabaseService.updateData("good", "gid", gid, udtparam);
 					} else {
 //						System.out.println("未找到商品");
@@ -248,6 +252,9 @@ public class ApprovalController {
 						istparam.put("gstock", nstock);
 						istparam.put("gprice", nprice);
 						istparam.put("gname", gname);
+						istparam.put("ginprice", price);
+						istparam.put("pddate", pddate);
+						istparam.put("keepdate", epdateString);
 						commonDatabaseService.insertStringData("good", istparam);
 					}
 				}
@@ -258,68 +265,68 @@ public class ApprovalController {
 		return JsonUtil.toJSON(resultCode);
 	}
 
-	public void opExcelInsert(String filePath) {
-		System.out.println("进入处理函数");
-		try {
-			excelUtil = new ExcelUtil(filePath);
-			Map<Integer, Map<Integer, Object>> map = excelUtil.readExcelContent();
-			for(int i=1;i<map.size();i++){
-				System.out.println("获取第一行");
-				Map<Integer, Object> resItem = map.get(1);
-				String gname = resItem.get(0).toString();
-				String type = resItem.get(1).toString();
-				float price = (float) resItem.get(2);
-				int count = (int) resItem.get(3);
-				String pddate = resItem.get(4).toString();
-				int epdate = (int) resItem.get(5);
-				float profit = (float) resItem.get(6);
-				String gid;
-				int gstock = 0;
-				float orprice;
-				float nprice;
-				int nstock;
-				List<Map<String, Object>> goodList = approvalService.getGoodList(gname);
-				System.out.println("查询商品名称");
-				if (goodList != null && goodList.size() > 0) {
-					Map<String, Object> goodItem = goodList.get(0);
-					gid = goodItem.get("gid").toString();
-					System.out.println("商品id+" + gid);
-					orprice = (float) goodItem.get("gprice");
-					gstock = (int) goodItem.get("gstock");
-					nprice = ((orprice * gstock) + profit) / (gstock + count);
-					nstock = gstock + count;
-				} else {
-					System.out.println("未找到商品");
-					String gkid = "";
-					List<Map<String, Object>> gkresutlt = approvalService.getGkidByName(type);
-					if (gkresutlt!=null && gkresutlt.size()>0) {
-						gkid = gkresutlt.get(0).get("gkid").toString();
-						System.out.println("商品种类id+" + gkid);
-					}
-					System.out.println("生成商品id");
-					gid = idBuilder.getGoodID();
-					System.out.println("商品id+" + gid);
-					nprice = price / count;
-					System.out.println("商品价格+" + nprice);
-					nstock = count;
-					Map<String, Object> ggkr = new HashMap<>();
-					ggkr.put("gid", gid);
-					ggkr.put("gkid", gkid);
-					commonDatabaseService.insertStringData("p_gk_relation", ggkr);
-				}
-				Map<String, Object> insertGood = new HashMap<>();
-				insertGood.put("gid", gid);
-				insertGood.put("gname", gname);
-				insertGood.put("gstock", nstock);
-				insertGood.put("gprice", nprice);
-				commonDatabaseService.insertStringData("good", insertGood);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		// }
-
-	}
+//	public void opExcelInsert(String filePath) {
+//		//System.out.println("进入处理函数");
+//		try {
+//			excelUtil = new ExcelUtil(filePath);
+//			Map<Integer, Map<Integer, Object>> map = excelUtil.readExcelContent();
+//			for(int i=1;i<map.size();i++){
+//				System.out.println("获取第一行");
+//				Map<Integer, Object> resItem = map.get(1);
+//				String gname = resItem.get(0).toString();
+//				String type = resItem.get(1).toString();
+//				float price = (float) resItem.get(2);
+//				int count = (int) resItem.get(3);
+//				String pddate = resItem.get(4).toString();
+//				int epdate = (int) resItem.get(5);
+//				float profit = (float) resItem.get(6);
+//				String gid;
+//				int gstock = 0;
+//				float orprice;
+//				float nprice;
+//				int nstock;
+//				List<Map<String, Object>> goodList = approvalService.getGoodList(gname);
+//				System.out.println("查询商品名称");
+//				if (goodList != null && goodList.size() > 0) {
+//					Map<String, Object> goodItem = goodList.get(0);
+//					gid = goodItem.get("gid").toString();
+//					System.out.println("商品id+" + gid);
+//					orprice = (float) goodItem.get("gprice");
+//					gstock = (int) goodItem.get("gstock");
+//					nprice = ((orprice * gstock) + profit) / (gstock + count);
+//					nstock = gstock + count;
+//				} else {
+//					System.out.println("未找到商品");
+//					String gkid = "";
+//					List<Map<String, Object>> gkresutlt = approvalService.getGkidByName(type);
+//					if (gkresutlt!=null && gkresutlt.size()>0) {
+//						gkid = gkresutlt.get(0).get("gkid").toString();
+//						System.out.println("商品种类id+" + gkid);
+//					}
+//					System.out.println("生成商品id");
+//					gid = idBuilder.getGoodID();
+//					System.out.println("商品id+" + gid);
+//					nprice = price / count;
+//					System.out.println("商品价格+" + nprice);
+//					nstock = count;
+//					Map<String, Object> ggkr = new HashMap<>();
+//					ggkr.put("gid", gid);
+//					ggkr.put("gkid", gkid);
+//					commonDatabaseService.insertStringData("p_gk_relation", ggkr);
+//				}
+//				Map<String, Object> insertGood = new HashMap<>();
+//				insertGood.put("gid", gid);
+//				insertGood.put("gname", gname);
+//				insertGood.put("gstock", nstock);
+//				insertGood.put("gprice", nprice);
+//				commonDatabaseService.insertStringData("good", insertGood);
+//			}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+//		// }
+//
+//	}
 	// /**
 	// * 审核文件
 	// * @param request

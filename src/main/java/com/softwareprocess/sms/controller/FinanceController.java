@@ -1,6 +1,7 @@
 package com.softwareprocess.sms.controller;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,54 @@ public class FinanceController {
 			resultCode = "success";
 		}
 		return JsonUtil.toJSON(resultCode);
+	}
+	
+	
+	/**
+	 * 获取lirun
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getProfit", produces = "application/json; charset=utf-8")
+	public String getProfit(HttpServletRequest request,
+			@RequestParam(value = "beginTime", required = false) String beginTime,
+			@RequestParam(value = "endTime", required = false) String endTime
+			) {
+		List<Map<String, Object>> resultCount = financeService.getProfit(null,beginTime,endTime);
+		List<Map<String, Object>> result = financeService.getProfit(request,beginTime,endTime);
+		String cost,sale,profit;
+		java.text.DecimalFormat df = new java.text.DecimalFormat("########0.00");
+		for(int i=0;i<result.size();i++){
+			Map<String, Object> item = result.get(i);
+			//String stockString = item.get("gstock").toString();
+			System.out.println(item.get("gstock"));
+			int stock = (int) item.get("gstock");
+			String ginpriceString = item.get("ginprice").toString();
+			float ginprice = Float.valueOf(ginpriceString);
+			cost = stock*ginprice+"";
+			item.put("cost", cost);
+			double count;
+			if (item.get("scount")!=null) {
+				count = (double) item.get("scount");
+				//count = Integer.valueOf(countString);
+			}else{
+				count = 0;
+			}
+			
+			String priceString = item.get("gprice").toString();
+			float price = Float.valueOf(priceString);
+			sale = df.format(count*price);
+			item.put("sale", sale);
+			
+			float mprofit = (float) ((price-ginprice)*count);
+			profit = df.format(mprofit);
+			System.out.println(profit);
+			item.put("profit", profit);
+			
+		}
+		return new DataTableSendParam(resultCount.get(0).get("sum"), resultCount.get(0).get("sum"), result).toJSON();
 	}
 
 	/**

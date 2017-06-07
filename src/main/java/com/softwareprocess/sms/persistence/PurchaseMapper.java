@@ -11,4 +11,6 @@ public interface PurchaseMapper {
 
 	List<Map<String, Object>> getProviderList(Map<String, Object> param);
 
+	List<Map<String, Object>> getProviderNameList(Map<String, Object> param);
+
 }

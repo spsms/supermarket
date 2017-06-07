@@ -29,7 +29,7 @@
 		FROM employee t1,e_a_relation t2,authority t3
 		WHERE t1.eid = t2.eid and t3.aid = t2.aid 	
 		<if test="name != ''">
-			and ename like '$%{name}%'
+			and ename like '%${name}%'
 		</if>
 		<if test="account != ''">
 			and eaccount = #{account}

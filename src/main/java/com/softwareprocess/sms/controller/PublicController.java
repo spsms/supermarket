@@ -82,7 +82,7 @@ public class PublicController {
     @RequestMapping(value = "getEmployeeInfo")
     public String getEmployeeInfo(HttpServletRequest request, HttpServletResponse response) {
     	HttpSession session  = request.getSession();
-    	System.out.println("进入控制器");
+    	//System.out.println("进入控制器");
     	String eid = session.getAttribute("userID").toString();
     	Map<String, Object> result = publicService.getEmployeeInfo(eid);
         return JsonUtil.toJSON(result);

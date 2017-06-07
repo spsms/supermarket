@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.softwareprocess.sms.param.DataTableReceiveParam;
 import com.softwareprocess.sms.persistence.PurchaseMapper;
+import com.softwareprocess.sms.tools.MapUtil;
 
 @Service
 public class PurchaseService {
@@ -29,10 +30,16 @@ public class PurchaseService {
 		return purchaseMapper.getRestockRecordList(param);
 	}
 
-	public List<Map<String, Object>> getProviderList(HttpServletRequest request) {
+	public List<Map<String, Object>> getProviderList(HttpServletRequest request, String pname) {
 		Map<String, Object> param = new HashMap<>();
-		// TODO Auto-generated method stub
+		new DataTableReceiveParam(request).setDatabaseQuery(param);
+		MapUtil.putMapParaEmpty(param, "name", pname);
 		return purchaseMapper.getProviderList(param);
+	}
+
+	public List<Map<String, Object>> getProviderNameList(HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		return purchaseMapper.getProviderNameList(param);
 	}
 
 }

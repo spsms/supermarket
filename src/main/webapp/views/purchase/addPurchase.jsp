@@ -27,7 +27,7 @@
 		//$("#select_good_kind").append("<option value='Value'>Text</option>");
 		$.ajax({
 			type : "post",
-			url : "<c:url value="/purchase/getProviderList"/>",
+			url : "<c:url value="/purchase/getProviderNameList"/>",
 			async : false,
 			dataType : "json",
 			data : {},

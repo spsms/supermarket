@@ -24,4 +24,14 @@ public class FinanceService {
 		return financeMapper.getSalary(param);
 	}
 
+	public List<Map<String, Object>> getProfit(HttpServletRequest request, String beginTime, String endTime) {
+		Map<String, Object> param = new HashMap<>();
+		new DataTableReceiveParam(request).setDatabaseQuery(param);
+		MapUtil.putMapParaEmpty(param, "beginTime", beginTime);
+		MapUtil.putMapParaEmpty(param, "endTime", endTime);
+		List<Map<String, Object>> result = financeMapper.getProfit(param);
+		
+		return result;
+	}
+
 }

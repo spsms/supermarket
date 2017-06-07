@@ -20,6 +20,7 @@
 		<if test="status != ''">
 			and t1.bstatus = #{status}
 		</if>
+		ORDER BY t1.bdate DESC
 		<if test="startNum!=null">
 			limit ${startNum},${pageLength}
 		</if>
@@ -42,6 +43,7 @@
 		<if test="status != ''">
 			and t1.srstatus = #{status}
 		</if>
+		ORDER BY t1.srdata DESC
 		<if test="startNum!=null">
 			limit ${startNum},${pageLength}
 		</if>
@@ -63,6 +65,7 @@
 		<if test="status != ''">
 			and t1.rstatus = #{status}
 		</if>
+		ORDER BY t1.rdate DESC
 		<if test="startNum!=null">
 			limit ${startNum},${pageLength}
 		</if>

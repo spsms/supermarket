@@ -35,49 +35,47 @@
 			cellspacing="0"></table>
 	</div>
 
-	<!-- 新增模态框 -->
-	<div class="modal fade" id="addTempBox" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">×</button>
-					<h4 class="modal-title" id="myModalLabel">报销审批</h4>
-				</div>
-				<div style="width: 90%; margin: 10px auto;">
-					<form class="form-horizontal" id="addBoxForm">
-						<div class="row">
-							<div class="col-sm-6">
-								审核状态： <select class="DataInput" name="checkMark" id="checkMark">
+<div class="modal fade" id="addTempBox" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×</button><h4 class="modal-title" id="myModalLabel">进货审批</h4>
+            </div>
+            <div style="width: 90%;margin: 10px auto;">
+                <form class="form-horizontal" id="addBoxForm">
+	                <div class="form-group">
+							<label class="col-sm-2 control-label">审核：</label>
+							<div class="col-sm-10">
+								<select class="DataInput" name="checkMark" id="checkMark">
 									<option value="0" selected="selected">待审核</option>
 									<option value="2">否决</option>
 									<option value="1">通过</option>
 								</select>
 							</div>
 						</div>
-						<div class="form-group" >
+						<div class="form-group">
 							<label class="col-sm-2 control-label">审核意见</label>
 							<div class="col-sm-10">
 								<input type="text" class="DataInput form-control" id="remark">
 							</div>
 						</div>
-						<div class="form-group" style="display: none">
+	                <div class="form-group" style="display: none">
 							<label class="col-sm-2 control-label">id</label>
 							<div class="col-sm-10">
 								<input type="text" class="DataInput form-control" id="rid">
 							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary"
-						onclick="submitAddBoxData()">提交</button>
-				</div>
-			</div>
-		</div>
-	</div>
+					</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="submitAddBoxData()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 	<script type="text/javascript">
@@ -198,6 +196,7 @@
      * 打开新增编辑框
      */
     function addTemp(rid) {
+    	//console.log("rid"+rid);
     	$("#rid").val(rid);
     	$("#remark").val("");
         $('#addTempBox').modal({});
@@ -207,11 +206,13 @@
      * 审批提交
      */
     function submitAddBoxData() {
-        var data = {"rid":$("#rid").val(),
+    	console.log($('#rid').val());
+        var data = {
+        		"rid":$("#rid").val(),
         		"remark":$("#remark").val(),
         		"status":$('#checkMark option:selected').val()
         }
-        //console.log(data);
+        console.log(data);
         $.ajax({
             type : "post",
             url : "<c:url value="/approval/approvalRestock"/>",

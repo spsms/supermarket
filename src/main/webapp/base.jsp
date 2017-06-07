@@ -158,6 +158,7 @@
                 <% if(userAuthorityList.indexOf("财务") != -1 ) { %>
                 <li><a href="#" onclick="addTab('添加报销','./views/finance/addBill.jsp','addBill')" >添加报销</a></li>
                 <li><a href="#" onclick="addTab('导出工资单','./views/finance/salary.jsp','salary')" >导出工资</a></li>
+                <li><a href="#" onclick="addTab('查看利润','./views/finance/profit.jsp','profit')" >查看利润</a></li>
                 <li><a href="#" onclick="addTab('添加工资单','./views/finance/addSalary.jsp','addSalary')" >添加工资</a></li>
                 <li><a href="#" onclick="addTab('报销记录','./views/finance/billRecord.jsp','billRecord')">报销记录</a></li>
                 <li><a href="#" onclick="addTab('工资单记录','./views/finance/salaryRecord.jsp','salaryRecord')">工资记录</a></li>
@@ -179,10 +180,10 @@
             <div id="tabs" style="height: 100%;">
                 <ul>
                     <!-- 初始标签 -->
-                    <!-- <li><a href="#tabs0"></a></li> -->
+                    <li><a href="./views/nl.jsp"></a></li>
                 </ul>
                 <!-- 初始标签内容 -->
-                <!-- <d+-*iv id="tabs0" class='subTab'>
+                <!--  <d+-*iv id="tabs0" class='subTab'>
                     <iframe class="mainframe" src=""></iframe>
                 </div> -->
             </div>

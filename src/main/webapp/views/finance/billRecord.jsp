@@ -95,6 +95,8 @@
                 "render" : function(data, type, row, meta){
                 	 if(typeof data == "undefined") {
                          return '暂无';
+                     }else{
+                    	 return data;
                      }
                 },
                 "targets" : 6

@@ -128,6 +128,18 @@ public class IDBuilder {
 		return id;
 	}
 	
+	/**
+	 * 供应商id
+	 * pv-[yyMMddhhmmss][4位随机数]
+	 * @return
+	 */
+	public String getProviderID() {
+		DateUtil dateUtil = new DateUtil();
+		String time = dateUtil.getCurrentTime("yyMMddhhmmss");
+		String id = "pv"+"-"+time+getFixLenthString(4);
+		return id;
+	}
+	
 	
 	
 	
@@ -158,6 +170,8 @@ public class IDBuilder {
 	    String fixLenthString = String.valueOf(pross);  
 	    return fixLenthString.substring(1, strLength + 1);  
 	}
+
+	
 
 
 	

@@ -38,7 +38,6 @@ public class EmployeeManagerService {
 		new DataTableReceiveParam(request).setDatabaseQuery(param);
 		MapUtil.putMapParaEmpty(param, "name", name);
 		MapUtil.putMapParaEmpty(param, "account", account);
-		
 		return employeeManagerMapper.getEmployeeList(param);
 	}
 

@@ -60,7 +60,7 @@
 	                <div class="form-group" style="display: none">
 							<label class="col-sm-2 control-label">id</label>
 							<div class="col-sm-10">
-								<input type="text" class="DataInput form-control" id="bid">
+								<input type="text" class="DataInput form-control" id="rid">
 							</div>
 					</div>
                 </form>

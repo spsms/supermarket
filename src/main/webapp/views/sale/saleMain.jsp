@@ -76,7 +76,9 @@
 					<option>程序填充</option>
 				</select> </br> </br> </br> <label for="id_select">&nbsp;&nbsp;&nbsp;&nbsp;选择商品&nbsp;
 					&nbsp;:&nbsp;</label> <select id="select_good" class="selectpicker"
-					data-live-search="true">
+					data-live-search="true"><option>cow</option>
+					<option>bull</option>
+					<option>程序填充</option>
 				</select> </br> </br> </br> <label>&nbsp;&nbsp;请输入数量 &nbsp;:&nbsp;</label> <input
 					id="good_count" oninput="cmoney()" type="text"
 					onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
@@ -112,24 +114,28 @@
 	</div>
 	</br></br></br>
 	<script type="text/javascript">
+		var good = $("#select_good");
 		var t;
 		var counter = 1;
 		$(document).ready(function() {
 			t = $('#dataTable').DataTable();
-			fillgood(1);
+			fillgood();
 			//$("#select_good").empty();
    		 });
 		var good_info = {};
 		
 		function goodKindChange(){
+			document.getElementById("select_good").innerHTML = "";
 			var s = $("#select_good_kind option:selected").val();
-			$("#select_good").empty();
-			fillgood(s);
+			console.log("genghuanshangpinzhonglei"+s);
+			good.empty();
+			//fillgood(s);
 		}
 		
 		
 		function fillgood(gkid) {
-			//console.log("进入函数");
+			console.log("进入函数");
+				$("#select_good").empty();
 				$.ajax({
 					type : "post",
 					url : "<c:url value="/sale/getGoodList"/>",
@@ -140,7 +146,7 @@
 					},
 					contentType : "application/x-www-form-urlencoded; charset=utf-8",
 					success : function(data) {
-						$("#select_good").empty();
+						console.log(data);
 						good_info = data;
 						//console.log(data);
 						for (var i = 0; i < data.length; i++) {

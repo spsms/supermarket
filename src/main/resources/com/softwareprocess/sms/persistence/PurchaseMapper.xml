@@ -3,26 +3,51 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.softwareprocess.sms.persistence.PurchaseMapper">
+	<!-- 获取供应商列表 -->
+	<select id="getProviderList" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT
+		<if test="startNum!=null">
+			t1.*,GROUP_CONCAT(t3.gkname) as goodkind
+		</if>
+		<if test="startNum==null">
+			count(distinct t1.pid) as sum
+		</if>
+		FROM provider t1,p_gk_relation t2,good_kind t3
+		WHERE t1.pid = t2.pid
+		and t3.gkid = t2.gkid
+		<if test="name != ''">
+			and pname like '$%{name}%'
+		</if>
+		group by t1.pid
+		<if test="startNum!=null">
+			limit ${startNum},${pageLength}
+		</if>
+	</select>
+
 	<!-- 获取商品库存列表 -->
 	<select id="getGoodStockList" parameterType="java.util.HashMap"
 		resultType="java.util.HashMap">
 		SELECT
 		<if test="startNum!=null">
-			t1.*,t2.scount
+			t1.*,t2.scount,GROUP_CONCAT(t3.gkname) as gkind,GROUP_CONCAT(t5.brid) as brid
 		</if>
 		<if test="startNum==null">
 			count(distinct t1.gid) as sum
 		</if>
 		FROM good t1 LEFT JOIN
-			(SELECT t2.gid,SUM(t2.scount) AS scount FROM sell_record t2
-				WHERE date_format(t2.sdate,'%Y-%m')=date_format(now(),'%Y-%m') 	and status='1'
-				GROUP BY gid) t2 ON t1.gid = t2.gid
-		WHERE 1
+		(SELECT t2.gid,SUM(t2.scount) AS scount FROM sell_record t2
+		WHERE date_format(t2.sdate,'%Y-%m')=date_format(now(),'%Y-%m') and
+		status='1'
+		GROUP BY gid) t2 ON t1.gid = t2.gid  LEFT JOIN back_record t5 ON t5.gid = t1.gid,good_kind t3,g_gk_relation t4
+		WHERE t1.gid = t4.gid and t4.gkid = t3.gkid 
+		
 		<if test="startNum!=null">
+			group by t1.gid
 			limit ${startNum},${pageLength}
 		</if>
 	</select>
-	
+
 	<!-- 获取进货记录列表 -->
 	<select id="getRestockRecordList" parameterType="java.util.HashMap"
 		resultType="java.util.HashMap">
@@ -36,20 +61,22 @@
 			count(*) as sum
 		</if>
 		FROM restock_record t1,employee t2,provider t3
-		WHERE t1.eid = t2.eid AND t1.pid = t3.pid
+		WHERE t1.eid = t2.eid
+		AND t1.pid = t3.pid
+		order by t1.rdate DESC
 		<if test="startNum!=null">
 			limit ${startNum},${pageLength}
 		</if>
 	</select>
 	
 	
-	<!-- 获取供应商列表 -->
-	<select id="getProviderList" parameterType="java.util.HashMap"
+	<!-- 获取进货记录列表 -->
+	<select id="getProviderNameList" parameterType="java.util.HashMap"
 		resultType="java.util.HashMap">
-		SELECT t1.*
-		FROM provider t1
+		SELECT t1.pid,t1.pname from provider t1
 	</select>
-	
-	
+
+
+
 
 </mapper>

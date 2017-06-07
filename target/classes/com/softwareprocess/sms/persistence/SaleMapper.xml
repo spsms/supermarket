@@ -51,6 +51,7 @@
 			and t1.snumber = #{snumber}
 		</if>
 		group by t1.snumber   
+		order by t1.sdate DESC
 		<if test="startNum!=null">
 			limit ${startNum},${pageLength}
 		</if>

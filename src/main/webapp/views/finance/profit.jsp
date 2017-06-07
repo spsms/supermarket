@@ -7,24 +7,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery.md5.js"/>"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
-
-<script type="text/javascript" src="<c:url value="/resources/datatables/media/js/buttons.html5.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/datatables/media/js/jszip.min.js"/>"></script>
-<link rel="stylesheet" type="text/css" href="<c:url value="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css"/>">
+<link href="<c:url value="/resources/css/purchaseMain.css"/>"
+	rel="stylesheet" type="text/css" media="screen" />
 <title></title>
 </head>
 <body>
 	<div class="panel-body" style="background-color: #FFF;">
 		<form class="form1 form-inline" id="searchForm">
 			<div class="form-group">
-				<label>本月工资单</label>
-			</div>
-			<div class="form-group">
-					<button type="button" onclick="print()" class="btn btn-primary"
-						style="margin-left: 18px;">打印</button>
+					<label>开始时间</label> <input type="text" class="formDatetime DataInput form-control" name="beginTime" style="width: 200px;">
+				</div>
+				<div class="form-group">
+					<label>结束时间</label> <input type="text" class="formDatetime DataInput form-control" name="endTime" style="width: 200px;">
+				</div>
+				<div class="form-group">
+					<button type="button" onclick="reloadData()"
+						class="btn btn-primary" style="margin-left: 18px;">查询</button>
 				</div>
 		</form>
 	</div>
@@ -49,38 +47,41 @@
 
     var dataTableConfig = {
         "ajax": {
-            "url": "<c:url value="/finance/getSalary"/>?fresh=" + Math.random(),
+            "url": "<c:url value="/finance/getProfit"/>?fresh=" + Math.random(),
             "type": "post",
             "data": function (d){
                 setFormDataInObject($('#searchForm'),d);
             }
         },
         "columns": [{
-            "title": "员工姓名",
-            "data": "ename"
+            "title": "商品名称",
+            "data": "gname"
         }, {
-             "title": "员工账户",
-             "data": "eaccount"
+             "title": "商品种类",
+             "data": "gkind"
        }, {
-            "title": "基本工资",
-            "data": "esalary"
+            "title": "商品库存",
+            "data": "gstock"
         }, {
-            "title": "提成",
-            "data": "extra"
+            "title": "商品售价",
+            "data": "gprice"
         }, {
-            "title": "总工资",
-            "data": "esalary"
+            "title": "商品销售量",
+            "data": "scount"
+        }, {
+            "title": "进货单价",
+            "data": "ginprice"
+        }, {
+            "title": "总成本",
+            "data": "cost"
+        }, {
+            "title": "销售额",
+            "data": "sale"
+        }, {
+            "title": "利润",
+            "data": "profit"
         }],
         "columnDefs": [
-        	{
-                "render" : function(data, type, row, meta){
-                    if(typeof data == "undefined") {
-                        return '0'
-                    }
-                    return data;
-                },
-                "targets" : [2,3,4]
-            },
             {
                 "render" : function(data, type, row, meta){
                     if(typeof data == "undefined") {
@@ -88,25 +89,27 @@
                     }
                     return data;
                 },
-                "targets" : [0,1,2,3,4]
-            }
-        ],
-        dom: 'Bfrtip',
-        "buttons": [ {
-            extend: 'excel',
-            'text': '导出为excel',
-            'exportOptions': {  
-                'modifier': {  
-                    'page': 'current'  
-                } 
+                "targets" : [5]
             },
-            customize: function( xlsx ) {
-                var sheet = xlsx.xl.worksheets['salary.xml'];
-                $('row c[r^="C"]', sheet).attr( 's', '2' );
+            {
+                "render" : function(data, type, row, meta){
+                    if(typeof data == "undefined") {
+                        return '0'
+                    }
+                    return data;
+                },
+                "targets" : [2,4,5,6,7,8]
+            },
+            {
+                "render" : function(data, type, row, meta){
+                    if(typeof data == "undefined") {
+                        return ''
+                    }
+                    return data;
+                },
+                "targets" : [0,1,2,3,4,5,6,7,8]
             }
-        } 
-        ] 
-        
+        ]
     };
 
     var datatablesData;//当前页查询数据缓存
@@ -129,9 +132,7 @@
         loadData();
     } 
     
-    function print(){
-    	alert("未找到设备");
-    }
+  	
 </script>
 
 </body>

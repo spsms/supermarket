@@ -193,8 +193,15 @@ public class SaleController {
 			@RequestParam(value="snumber",required = false) String snumber){
 		HttpSession session = request.getSession();
 		String userID = session.getAttribute("userID").toString();
+		java.text.DecimalFormat df = new java.text.DecimalFormat("########0.00");
 		List<Map<String, Object>> resultCount = saleService.getSaleRecordList(null, userID,snumber);
 		List<Map<String, Object>> result = saleService.getSaleRecordList(request, userID,snumber);
+		for (int i = 0; i < result.size(); i++) {
+			Map<String, Object> item = result.get(i);
+			double money = (double) item.get("money");
+			String moneyString = df.format(money);
+			item.put("money", moneyString);
+		}
 		return new DataTableSendParam(resultCount.get(0).get("sum"), resultCount.get(0).get("sum"), result)
 				.toJSON();
 	}

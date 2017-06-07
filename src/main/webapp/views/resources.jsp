@@ -15,6 +15,7 @@
 <script type="text/javascript" src="<c:url value="/resources/bootstrapDatetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"/>"  charset="UTF-8"></script>
 
 <%--表格--%>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/datatables.css"/>">
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/datatables/media/css/jquery.dataTables.css"/>">
 <script type="text/javascript" src="<c:url value="/resources/datatables/media/js/jquery.dataTables.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/datatables/media/js/DataTableUtil.js"/>"></script>
